@@ -5,7 +5,7 @@ A full CRUD app that allows users to upload and share their own delicious recipe
 
 ## IMPORTANT PLEASE READ!!! 
 
-- YOU NEED TO DOWNLOAD ALL THE PACKAGES IN THE REQUIREMENTS.TXT TO BE ABLE TO RUN THIS PROJECT!!!
+- This project have dependencies. Please download the packages in the requirements.txt!!!
 
 ```
 pip install -r requirements.txt
