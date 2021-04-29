@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel='stylesheet' href='{% static "css/style.css" %}'>
+    <link rel='stylesheet' href='{% static "css/modal.css" %}'>
+    
+
+</head>
+<body>
+    <div id='container_6'>
+        <div id='top'>
+            <h1 id='ys'>Yummy Simple</h1>
+            <h4 id='home'><a class='p1' href='/home'>Home</a></h4>
+            <h4 id='Profile'><a class='p1' href='/users/{{request.session.user_id}}'>Profile</a></h4>
+            <p id='signed'>Signed in as: <a class='p1' href='/users/{{request.session.user_id}}'>{{request.session.username}}</a></p>
+            <p id='logout'><a  class ='p1' href='/logout'>Log out</a></p> 
+        </div>
+        <hr>
+
+        <div id='bottom'>
+            <h1 class='header_p'>Edit Profile</h1>
+            <br>
+
+            {% if messages %}
+            <ul id='messages' class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+                <div id='left_edit'>
+                    <form action='/users/{{user.id}}/update_info' method='POST'>
+                        <h3 class='index_h'>Edit Information</h3>
+                    {% csrf_token %}
+                        <p class='ls'>Username: 
+                            <input type='text' value='{{user.username}}' name='username'>
+                        </p>
+                        <p class='ls'>Email: 
+                            <input type='text' value='{{user.email}}' name='email'>
+                        </p>
+                        <p class='ls'>Birthday: 
+                            <input type='date' value='{{user.birthday | date:"Y-m-d"}}' name='date'>
+                        </p>
+                        <input id='signin' type='submit' value='Update info'>
+                    </form>
+                </div>
+
+                <div id='right_edit'>
+                    <form action='/users/{{user.id}}/update_pw' method='POST'>
+                        <h3 class='index_h'>Change Password</h3>
+                    {% csrf_token %}
+                        <p class='ls'>Current password:
+                            <input type='password' name='current_pw'>
+                        </p>
+                        <p class='ls'>New password:
+                            <input type='password' name='new_pw'>
+                        </p>
+                        <p class='ls'>Confirm password:
+                            <input type='password' name='confirm_pw'>
+                        </p>
+                        <input id='signin' type='submit' value='Update password'>
+                    </form>
+                </div><br>
+            
+            <button class="ls_e" id='edit' onclick='myFunction2()'><a id='edit_a'>Delete Account</a></button>
+        </div>
+
+    </div>
+
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.slim.js"
+    integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM="
+    crossorigin="anonymous"></script>
+    <script src='{% static "js/script.js" %}'></script>
+    <script src='{% static "js/modal.js" %}'></script>
+    <script>
+        function myFunction2(){
+            Modal.confirm({
+                title: 'Delete account',
+                message: 'Are you sure you want to delete your account?',
+                onConfirm: function() {
+                    alert('Your account has been deleted!')
+                    window.location.href='/users/{{user.id}}/delete';
+                },
+                onCancel: function() {
+                },
+                onClose: function() {
+                }
+            });
+        }
+    </script>
+</body>
+</html>

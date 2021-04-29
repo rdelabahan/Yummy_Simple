@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel='stylesheet' href='{% static "css/style.css" %}'>
+    <link rel='stylesheet' href='{% static "css/slick.css" %}'>
+    <link rel='stylesheet' href='{% static "css/slick-theme.css" %}'>
+</head>
+<body>
+    <div id='container_r'>
+        <div id='top'>
+            <h1 id='ys'>Yummy Simple</h1>
+            <h4 id='home'><a class='p1' href='/home'>Home</a></h4>
+            <h4 id='Profile'><a class='p1' href='/users/{{request.session.user_id}}'>Profile</a></h4>
+            <p id='signed'>Signed in as: <a class='p1' href='/users/{{request.session.user_id}}'>{{request.session.username}}</a></p>
+            <p id='logout'><a  class ='p1' href='/logout'>Log out</a></p>   
+        </div>
+        <hr>
+        <div id='top_search'>
+            <form id='search' action='/search' method='POST'>
+                {% csrf_token %}
+                <img id="searchbar" src="{% static 'img/search_icon.png' %}" alt="photo of search icon">
+                <input type="text" placeholder="Search recipe.." name='search'>
+            </form>
+        </div>
+        
+        <div id='middle'>
+            <div id='demo_r' class="slider demo">
+                {% for recipe in all_recipes %}
+                    {% for image in recipe.images.all %}
+                <div><img src="{{ image.image.url }}" height='398px' width='550px' alt='recipe image'></div>
+                    {% endfor %}
+                {% endfor %}
+            </div><br>
+        </div>
+
+        <div id='check'>
+            <p><a class='check_r' href='/upload'>Upload and share your own recipe!</a></p>
+            <p><a class='check_r' href='/all_recipes'>Check all Yummy Simple recipes!</a></p>
+            </div>
+
+        <div id='bottom'>
+            <div id='left_r'>
+                <h1 class='header_r'>Latest recipes shared</h1>
+                {% for recipe in recipes %}
+                <div class='inner_r'>
+                    <p><a class='inner_p' href='/recipes/{{recipe.id}}'>{{recipe.title}}</a></p>
+                    <p>Uploaded by: {{recipe.uploader.username}}</p>
+                    <p>{{recipe.user_likes.all.count}} <img id='thumb_2' src="{% static 'img/like.png' %}" alt="like thumbs up"></p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div id='right_r'>
+                <h1 class='header_r'>Most liked recipes</h1>
+                {% for recipe in most_liked_recipes %}
+                <div class='inner_r'>
+                    <p><a class='inner_p' href='/recipes/{{recipe.id}}'>{{recipe.title}}</a></p>
+                    <p>Uploaded by: {{recipe.uploader.username}}</p>
+                    <p>{{recipe.user_likes.all.count}} <img id='thumb_2' src="{% static 'img/like.png' %}" alt="like thumbs up"></p>
+                </div>
+                {% endfor %}
+            </div>
+    </div>
+
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.slim.js"
+    integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM="
+    crossorigin="anonymous"></script>
+    <script src='{% static "js/script.js" %}'></script>
+    <script src='{% static "js/slick.js" %}'></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    {% load static %}
+    <link rel='stylesheet' href='{% static "css/style.css" %}'>
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.slim.js"
+    integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM="
+    crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id='container'>
+        <div id='top'>
+            <h1 id='ys'>Yummy Simple</h1>
+        </div>
+        <hr>
+        <div id='inner_c'>
+            <div id='register'>
+                <h1 class='index_h'>Register Now!</h1>
+
+                {% if messages %}
+                <ul id='messages' class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <form action='create_user' method='POST'>
+                {% csrf_token %}
+                    <p class='ls'>Username:
+                        <input type='text' name='username'>
+                    </p>
+                    <p class='ls'>Email:
+                        <input type="email" id="email" name="email">
+                    </p>
+                    <p class='ls'>Birthday:
+                        <input type="date" id="date" name="date">
+                    </p>
+                    <p class='ls'>Password:
+                        <input type='password' name='pw'>
+                    </p>
+                    <p class='ls'>Confirm Password:
+                        <input type='password' name='confirm_pw'>
+                    </p>
+                    <input class='ls' id ='ls_r' type='submit' value='Create account'>
+                    <p class='ls'><a class='ls_p' href='/'>Go back</a></p>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src='{% static "js/script.js" %}'></script>
+</body>
+</html>

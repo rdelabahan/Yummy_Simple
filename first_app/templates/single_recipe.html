@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel='stylesheet' href='{% static "css/style.css" %}'>
+    <link rel='stylesheet' href='{% static "css/slick.css" %}'>
+    <link rel='stylesheet' href='{% static "css/slick-theme.css" %}'>
+    <link rel='stylesheet' href='{% static "css/backTop.css" %}'>
+    <link rel='stylesheet' href='{% static "css/modal.css" %}'>
+
+</head>
+<body>
+    <div id='container_3'>
+        <div id='top'>
+            <h1 id='ys'>Yummy Simple</h1>
+            <h4 id='home'><a class='p1' href='/home'>Home</a></h4>
+            <h4 id='Profile'><a class='p1' href='/users/{{request.session.user_id}}'>Profile</a></h4>
+            <p id='signed'>Signed in as: <a class='p1' href='/users/{{request.session.user_id}}'>{{request.session.username}}</a></p>
+            <p id='logout'><a  class ='p1' href='/logout'>Log out</a></p> 
+        </div>
+        <hr>
+
+        <div id='bottom'>
+            <h1 class='header_p'>{{recipe.title}}</h1>
+            <p>Uploaded by: <a class='inner_p' href='/users/{{recipe.uploader.id}}'>{{recipe.uploader.username}}</a></p>
+            <p>(Date Uploaded: {{recipe.created_at | date:'M j, Y'}})</p>
+            <p id='thumb_1'>{{recipe.user_likes.all.count}}</p>
+            <img id='thumb_2' src="{% static 'img/like.png' %}" alt="like thumbs up">
+
+            {% if this_user not in recipe.user_likes.all %}
+            <p><a class='l1' href='/{{recipe.id}}/add_likes'>Like</a></p>
+            {% else %}
+            <p><a class='l1' href='/{{recipe.id}}/remove_likes'>Unlike</a></p>
+            {% endif %}<br>
+
+        <div id='demo' class="slider demo">
+            {% for image in recipe.images.all %}
+            <div><img src="{{ image.image.url }}" height='348px' width='450px' alt='recipe image'></div>
+            {% endfor %}
+        </div><br>
+    </div>
+
+    <div id='c1'>
+        {{recipe.content|safe}}<br>
+    </div>
+
+    <div id='edit_position'>
+        {% if request.session.user_id == recipe.uploader.id %}
+            <button class="ls_e" id='edit' ><a id='edit_a' href='/recipes/{{recipe.id}}/edit'>Edit Recipe</a></button>
+        {% endif %}
+        {% if request.session.user_id == recipe.uploader.id %}
+            <button class='ls_e' id='delete' onclick='myFunction()' ><a id='delete_a'>Delete Recipe</a></button>
+        {% endif %}
+    </div>
+    
+    <a id='backTop'>Back To Top</a>
+
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.slim.js"
+    integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM="
+    crossorigin="anonymous"></script>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src='{% static "js/slick.js" %}'></script>
+    <script src='{% static "js/script.js" %}'></script>
+    <script src='{% static "js/jquery.backTop.min.js" %}'></script>
+    <script src='{% static "js/modal.js" %}'></script>
+
+    
+    <script>
+        function myFunction(){
+            Modal.confirm({
+                title: 'Delete recipe',
+                message: 'Are you sure you want to delete this recipe?',
+                onConfirm: function() {
+                    alert('recipe deleted!')
+                    window.location.href='/recipes/{{recipe.id}}/delete';
+                },
+                onCancel: function() {
+                },
+                onClose: function() {
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

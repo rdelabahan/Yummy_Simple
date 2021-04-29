@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yummy Simple</title>
+    {% load static %}
+    <link rel='stylesheet' href='{% static "css/style.css" %}'>
+    <link rel='stylesheet' href='{% static "css/slick.css" %}'>
+    <link rel='stylesheet' href='{% static "css/slick-theme.css" %}'>
+    
+</head>
+<body>
+    <div id='container'>
+        <div id='top'>
+            <h1 id='ys'>Yummy Simple</h1>
+        </div>
+        <hr>
+        <div id='left'>
+            <h1 class='index_h'>Welcome to Yummy Simple!</h1>
+            <p id='pr'> A community where they can upload and share their own delicious recipes!</p><br>
+
+            <div id='demo_index' class="slider demo">
+                {% for recipe in recipes %}
+                    {% for image in recipe.images.all %}
+                <div><img src="{{ image.image.url }}" height='300px' width='390px' alt='recipe image'></div>
+                    {% endfor %}
+                {% endfor %}
+            </div><br>
+        </div>
+
+        <div id='right'>
+            <h3 class='index_h'>Sign In</h3>
+
+            {% if messages %}
+            <ul id='messages' class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <form action='/authenticate_user' method='POST'>
+            {% csrf_token %}
+                <p class='ls'>Username:
+                    <input type='text' name='l_username'>
+                </p>
+                <p class='ls'>Password:
+                    <input type='password' name='l_pw'>
+                </p>
+                <input id='signin' type='submit' value='Sign In'>
+                <p class='ls'><a class='ls_p' href='/register'>Don't have an account? Register now!</a></p>
+            </form>
+
+        </div>
+
+    </div>
+
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.slim.js"
+    integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM="
+    crossorigin="anonymous"></script>
+    <script src='{% static "js/slick.js" %}'></script>
+    <script src='{% static "js/script.js" %}'></script>
+</body>
+</html>
